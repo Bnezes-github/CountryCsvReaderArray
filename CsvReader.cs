@@ -1,6 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
-namespace CountryReader
+namespace CountryReaderList
 {
     class CsvReader
     {
@@ -9,19 +10,22 @@ namespace CountryReader
         {
             this._csvFilePath = cvsFilePath;
         }
-        public Country[] ReadFirstNCountries(int nCountries)
+        public List<Country> ReadAllCountries() 
         {
-            Country[] countries = new Country[nCountries];
+            List<Country> countries = new List<Country>();
 
             using (StreamReader sr = new StreamReader(_csvFilePath))
             {
                 //read header line
                 sr.ReadLine();
-                for (int i = 0; i < nCountries; i++)
+
+                string csvLine;
+
+                while ((csvLine = sr.ReadLine()) != null)
                 {
-                    string csvLine = sr.ReadLine();
-                    countries[i] = ReadCountryFromCvsLine(csvLine);
+                    countries.Add(ReadCountryFromCvsLine(csvLine));
                 }
+               
             }
                 return countries;
         }
